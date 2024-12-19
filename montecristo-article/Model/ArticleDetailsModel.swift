@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+@Observable
+class ArticleDetailsModel {
+
+    func articleButtonPressed() {
+
+    }
+
+}
