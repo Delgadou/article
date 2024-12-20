@@ -16,6 +16,6 @@ class CreateArticleSheetModel {
 
     func createButtonPressed(shouldPresentCreateSheet: Binding<Bool>, articles: Binding<[Article]>) {
         articles.wrappedValue.append(Article(title: title, subtitle: subtitle, content: content))
-        shouldPresentCreateSheet.wrappedValue = true
+        shouldPresentCreateSheet.wrappedValue = false
     }
 }

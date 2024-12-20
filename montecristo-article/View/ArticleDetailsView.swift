@@ -9,50 +9,55 @@ import SwiftUI
 
 struct ArticleDetailsView: View {
     @State var articleDetailsModel = ArticleDetailsModel()
-    var articleDetails: Article
-    let options = ["Edit", "Delete"]
+    @Binding var articleDetails: Article
+
+    private var editButton: some View {
+        Group {
+            if articleDetailsModel.editingMode == .inactive {
+                Button(action: articleDetailsModel.editButtonPressed) {
+                    Text("Edit")
+                }
+            } else {
+                Button(action: articleDetailsModel.doneButtonPressed) {
+                    Text("Done")
+                }
+            }
+        }
+    }
 
     var body: some View {
         VStack {
-            HStack {
-                Text(articleDetails.title)
-                    .bold()
-                    .font(.largeTitle)
-                    .padding(.bottom)
-
-                Spacer()
-
-                Menu{
-                    Button("Edit", action: {
-
-                    })
-
-                    Button("Delete", action: {
-
-                    })
-                } label: {
-                    Image(systemName: "line.3.horizontal")
-                        .foregroundStyle(.blue)
-                        .padding(10)
-                        .contentShape(.rect)
-                }
-            }
+            Text(articleDetails.title)
+                .bold()
+                .font(.largeTitle)
+                .padding(.bottom)
+                .hAlign(.leading)
 
             Text(articleDetails.subtitle)
                 .foregroundStyle(.secondary)
                 .font(.subheadline)
                 .hAlign(.leading)
-            Divider()
-            Text(articleDetails.content)
-                .padding(.top)
-                .hAlign(.leading)
+
+            TextEditor(text: $articleDetails.content)
+                .padding(.all, 10)
+                .padding(.bottom, 10)
+                .lineLimit(5...10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray, lineWidth: 1)
+                )
+                .disabled(articleDetailsModel.editingMode == .active ? false : true)
         }
-    
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                editButton
+            }
+        }
         .padding()
         .vAlign(.top)
     }
 }
 
 #Preview {
-    ArticleDetailsView(articleDetails: Article(title: "Bora bill", subtitle: "Bora bill", content: "Bora bill"))
+    //ArticleDetailsView(articleDetails: Article(title: "Bora bill", subtitle: "Bora bill", content: "Bora bill"))
 }

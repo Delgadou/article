@@ -36,4 +36,12 @@ class ArticleListModel {
         editingMode = .inactive
     }
 
+    func articleBinding(for id: Array<Article>.Index) -> Binding<Article> {
+        Binding {
+            self.articles[id]
+        } set: { newNote in
+            self.articles[id] = newNote
+        }
+
+    }
 }

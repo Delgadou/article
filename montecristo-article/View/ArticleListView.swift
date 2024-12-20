@@ -59,23 +59,15 @@ struct ArticleListView: View {
                 .hAlign(.leading)
 
             List(selection: $articleListModel.selectedItems) {
-                ForEach(articleListModel.articles) { article in
-                    NavigationLink(article.title, value: article)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
+                ForEach($articleListModel.articles, id: \.id) { articleBinding in
+                    NavigationLink(value: articleBinding) {
+                        VStack(alignment: .leading) {
+                            Text(articleBinding.wrappedValue.title)
+                        }
+                    }
                 }
             }
             .environment(\.editMode, $articleListModel.editingMode)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    deleteButton
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                    createButton
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    editButton
-                }
-            }
             .listStyle(.inset)
             .scrollContentBackground(.hidden)
             .sheet(isPresented: $articleListModel.shouldPresentCreateSheet,
@@ -87,9 +79,32 @@ struct ArticleListView: View {
         }
         .padding()
         .vAlign(.top)
-        .navigationDestination(for: Article.self) { article in
-            ArticleDetailsView(articleDetails: article)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                deleteButton
+            }
+            ToolbarItem(placement: .topBarLeading) {
+                createButton
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                editButton
+            }
         }
+        .navigationDestination(for: Binding<Article>.self) { articleBinding in
+            ArticleDetailsView(articleDetails: articleBinding)
+        }
+    }
+}
+
+extension Binding: @retroactive Hashable where Value: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.wrappedValue.hashValue)
+    }
+}
+
+extension Binding: @retroactive Equatable where Value: Equatable {
+    public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
     }
 }
 

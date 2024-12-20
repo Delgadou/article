@@ -6,9 +6,20 @@
 //
 
 import Foundation
+import SwiftUI
 
 @Observable
 class ArticleDetailsModel {
+    var editingMode = EditMode.inactive
+
+    func editButtonPressed() {
+        editingMode = .active
+    }
+
+
+    func doneButtonPressed() {
+        editingMode = .inactive
+    }
 
     func articleButtonPressed() {
 
