@@ -16,11 +16,15 @@ class ArticleListModel {
     var shouldPresentCreateSheet = false
 
     func deleteButtonPressed() {
-        for article in selectedItems {
-            if let index = articles.lastIndex(where: { $0.id == article }) {
-                articles.remove(at: index)
+        withAnimation {
+            for article in selectedItems {
+                if let index = articles.firstIndex(where: { $0.id == article }) {
+                    articles.remove(at: index)
+                }
             }
+            
             selectedItems = Set<Article.ID>()
+            editingMode = .inactive
         }
     }
 
@@ -29,6 +33,11 @@ class ArticleListModel {
     }
 
     func editButtonPressed() {
+        print("Empty line")
+        for article in articles {
+            print("Article: \(article)")
+        }
+
         editingMode = .active
     }
 

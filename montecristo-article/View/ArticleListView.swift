@@ -49,8 +49,6 @@ struct ArticleListView: View {
         }
     }
 
-
-
     var body: some View {
         VStack {
             Text("Monte Cristo Articles")
@@ -58,13 +56,11 @@ struct ArticleListView: View {
                 .bold()
                 .hAlign(.leading)
 
-            List(selection: $articleListModel.selectedItems) {
-                ForEach($articleListModel.articles, id: \.id) { articleBinding in
-                    NavigationLink(value: articleBinding) {
-                        VStack(alignment: .leading) {
-                            Text(articleBinding.wrappedValue.title)
-                        }
-                    }
+            List($articleListModel.articles, selection: $articleListModel.selectedItems) { articles in
+                NavigationLink {
+                    ArticleDetailsView(articleDetails: articles)
+                } label: {
+                    Text(articles.title.wrappedValue)
                 }
             }
             .environment(\.editMode, $articleListModel.editingMode)
@@ -90,21 +86,6 @@ struct ArticleListView: View {
                 editButton
             }
         }
-        .navigationDestination(for: Binding<Article>.self) { articleBinding in
-            ArticleDetailsView(articleDetails: articleBinding)
-        }
-    }
-}
-
-extension Binding: @retroactive Hashable where Value: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.wrappedValue.hashValue)
-    }
-}
-
-extension Binding: @retroactive Equatable where Value: Equatable {
-    public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
-        lhs.wrappedValue == rhs.wrappedValue
     }
 }
 

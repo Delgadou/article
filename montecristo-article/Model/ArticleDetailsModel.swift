@@ -11,6 +11,7 @@ import SwiftUI
 @Observable
 class ArticleDetailsModel {
     var editingMode = EditMode.inactive
+    var article: Article = Article(title: "", subtitle: "", content: "")
 
     func editButtonPressed() {
         editingMode = .active
