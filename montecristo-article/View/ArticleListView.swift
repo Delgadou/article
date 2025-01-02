@@ -55,7 +55,6 @@ struct ArticleListView: View {
                 .font(.title)
                 .bold()
                 .hAlign(.leading)
-
             List($articleListModel.articles, selection: $articleListModel.selectedItems) { articles in
                 NavigationLink {
                     ArticleDetailsView(articleDetails: articles)

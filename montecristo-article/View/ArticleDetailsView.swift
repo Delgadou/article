@@ -27,16 +27,28 @@ struct ArticleDetailsView: View {
 
     var body: some View {
         VStack {
-            Text(articleDetails.title)
-                .bold()
-                .font(.largeTitle)
-                .padding(.bottom)
-                .hAlign(.leading)
+            if articleDetailsModel.editingMode == .active {
+                TextField("Title", text: $articleDetails.title, axis: .vertical)
+                    .lineLimit(1...5)
+                    .textCustomStyle()
+            } else {
+                Text(articleDetails.title)
+                    .textCustomStyle()
+            }
 
-            Text(articleDetails.subtitle)
-                .foregroundStyle(.secondary)
-                .font(.subheadline)
-                .hAlign(.leading)
+            if articleDetailsModel.editingMode == .active {
+                TextField("Subtitle", text: $articleDetails.subtitle, axis: .vertical)
+                    .lineLimit(1...3)
+                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .hAlign(.leading)
+
+            } else {
+                Text(articleDetails.subtitle)
+                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .hAlign(.leading)
+            }
 
             TextEditor(text: $articleDetails.content)
                 .padding(.all, 10)
@@ -55,6 +67,17 @@ struct ArticleDetailsView: View {
         }
         .padding()
         .vAlign(.top)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func textCustomStyle() -> some View {
+        self
+            .bold()
+            .font(.largeTitle)
+            .padding(.bottom)
+            .hAlign(.leading)
     }
 }
 

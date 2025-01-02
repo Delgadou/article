@@ -22,7 +22,6 @@ class ArticleListModel {
                     articles.remove(at: index)
                 }
             }
-            
             selectedItems = Set<Article.ID>()
             editingMode = .inactive
         }
@@ -33,11 +32,6 @@ class ArticleListModel {
     }
 
     func editButtonPressed() {
-        print("Empty line")
-        for article in articles {
-            print("Article: \(article)")
-        }
-
         editingMode = .active
     }
 
@@ -51,6 +45,5 @@ class ArticleListModel {
         } set: { newNote in
             self.articles[id] = newNote
         }
-
     }
 }
