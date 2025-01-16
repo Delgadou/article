@@ -8,7 +8,7 @@
 import Foundation
 
 struct Article: Identifiable, Hashable, Equatable, Sendable {
-    var id = UUID()
+    let id = UUID()
     var title: String
     var subtitle: String
     var content: String

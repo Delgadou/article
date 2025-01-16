@@ -9,9 +9,31 @@ import SwiftUI
 
 @main
 struct montecristo_articleApp: App {
+    let model = ArticleListModel(
+        articles: [
+        ArticleDetailsModel(
+            article: Article(title: "How to create App Intents", subtitle: "Discover more about app intents in this article", content: "Lorem ipsum"),
+            isArticleCreationMode: false
+        ),
+        ArticleDetailsModel(
+            article: Article(title: "How to create App Intents", subtitle: "Discover more about app intents in this article", content: "Lorem ipsum"),
+            isArticleCreationMode: false
+        ),
+        ArticleDetailsModel(
+            article: Article(title: "How to create App Intents", subtitle: "Discover more about app intents in this article", content: "Lorem ipsum"),
+            isArticleCreationMode: false
+        ),
+        ArticleDetailsModel(
+            article: Article(title: "Internacional from Porto Alegre", subtitle: "Discover more about Internacional history", content: "Lorem ipsum"),
+            isArticleCreationMode: false
+        ),
+    ])
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                ArticleListView(model: self.model)
+            }
         }
     }
 }

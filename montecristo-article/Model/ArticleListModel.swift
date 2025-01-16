@@ -7,13 +7,39 @@
 
 import Foundation
 import SwiftUI
+import SwiftNavigation
+import SwiftUINavigation
+import IdentifiedCollections
 
 @Observable
 class ArticleListModel {
-    var articles: [Article] = Article.preview()
-    var selectedItems: Set<Article.ID> = []
+    var articles: IdentifiedArrayOf<ArticleDetailsModel>
+    var selectedItems: Set<ArticleDetailsModel.ID> = []
     var editingMode = EditMode.inactive
     var shouldPresentCreateSheet = false
+
+    var destination: Destination?
+
+    @CasePathable
+    enum Destination {
+        case add(ArticleDetailsModel)
+        case edit(ArticleDetailsModel)
+    }
+
+    init(
+        articles: IdentifiedArrayOf<ArticleDetailsModel> = []
+    ) {
+        self.articles = articles
+    }
+
+    //    private func bind() {
+    //        for articleDetailsModel in articles {
+    //            articleDetailsModel.onTap = { [weak self, weak articleDetailsModel] in
+    //                guard let self, let articleDetailsModel else { return }
+    //                destination = .edit(articleDetailsModel)
+    //            }
+    //        }
+    //    }
 
     func deleteButtonPressed() {
         withAnimation {
@@ -22,13 +48,24 @@ class ArticleListModel {
                     articles.remove(at: index)
                 }
             }
-            selectedItems = Set<Article.ID>()
+            selectedItems = Set<ArticleDetailsModel.ID>()
             editingMode = .inactive
         }
     }
 
+    func closeArticleCreator() {
+        destination = nil
+    }
+
+    func saveCreatedArticle(article: Binding<Article>) {
+        articles.append(ArticleDetailsModel(article: article.wrappedValue, isArticleCreationMode: false))
+        destination = nil
+    }
+
     func createButtonPressed() {
-        shouldPresentCreateSheet = true
+        destination = .add(ArticleDetailsModel(
+            article: Article(title: "", subtitle: "", content: ""), isArticleCreationMode: true)
+        )
     }
 
     func editButtonPressed() {
@@ -37,13 +74,5 @@ class ArticleListModel {
 
     func doneButtonPressed() {
         editingMode = .inactive
-    }
-
-    func articleBinding(for id: Array<Article>.Index) -> Binding<Article> {
-        Binding {
-            self.articles[id]
-        } set: { newNote in
-            self.articles[id] = newNote
-        }
     }
 }

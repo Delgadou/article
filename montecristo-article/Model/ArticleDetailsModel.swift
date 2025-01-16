@@ -7,16 +7,20 @@
 
 import Foundation
 import SwiftUI
+import SwiftUINavigation
+import XCTestDynamicOverlay
 
 @Observable
-class ArticleDetailsModel {
+class ArticleDetailsModel: Identifiable {
     var editingMode = EditMode.inactive
-    var article: Article = Article(title: "", subtitle: "", content: "")
+    var article: Article
+    var isArticleCreationMode: Bool = false
+
+    var onTap: () -> Void = unimplemented("ItemRowModel.onTap")
 
     func editButtonPressed() {
         editingMode = .active
     }
-
 
     func doneButtonPressed() {
         editingMode = .inactive
@@ -26,4 +30,11 @@ class ArticleDetailsModel {
 
     }
 
+    init(article: Article, isArticleCreationMode: Bool) {
+        self.article = article
+        if (isArticleCreationMode) {
+            self.isArticleCreationMode = isArticleCreationMode
+            self.editingMode = .active
+        }
+    }
 }

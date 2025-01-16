@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		972141ED2D37DC500070EAD8 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 972141EC2D37DC500070EAD8 /* IdentifiedCollections */; };
 		9775436D2D11B4D800E88B8B /* AppKitNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 9775436C2D11B4D800E88B8B /* AppKitNavigation */; };
 		9775436F2D11B4D800E88B8B /* SwiftNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 9775436E2D11B4D800E88B8B /* SwiftNavigation */; };
 		977543712D11B4D800E88B8B /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 977543702D11B4D800E88B8B /* SwiftUINavigation */; };
@@ -30,6 +31,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9775436F2D11B4D800E88B8B /* SwiftNavigation in Frameworks */,
+				972141ED2D37DC500070EAD8 /* IdentifiedCollections in Frameworks */,
 				9775436D2D11B4D800E88B8B /* AppKitNavigation in Frameworks */,
 				977543712D11B4D800E88B8B /* SwiftUINavigation in Frameworks */,
 			);
@@ -77,6 +79,7 @@
 				9775436C2D11B4D800E88B8B /* AppKitNavigation */,
 				9775436E2D11B4D800E88B8B /* SwiftNavigation */,
 				977543702D11B4D800E88B8B /* SwiftUINavigation */,
+				972141EC2D37DC500070EAD8 /* IdentifiedCollections */,
 			);
 			productName = "montecristo-article";
 			productReference = 97CFD5B82D119AA100849C03 /* montecristo-article.app */;
@@ -108,6 +111,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9775436B2D11B4D800E88B8B /* XCRemoteSwiftPackageReference "swift-navigation" */,
+				972141EB2D37DC500070EAD8 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 97CFD5B92D119AA100849C03 /* Products */;
@@ -356,6 +360,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		972141EB2D37DC500070EAD8 /* XCRemoteSwiftPackageReference "swift-identified-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-identified-collections";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		9775436B2D11B4D800E88B8B /* XCRemoteSwiftPackageReference "swift-navigation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-navigation.git";
@@ -367,6 +379,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		972141EC2D37DC500070EAD8 /* IdentifiedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 972141EB2D37DC500070EAD8 /* XCRemoteSwiftPackageReference "swift-identified-collections" */;
+			productName = IdentifiedCollections;
+		};
 		9775436C2D11B4D800E88B8B /* AppKitNavigation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9775436B2D11B4D800E88B8B /* XCRemoteSwiftPackageReference "swift-navigation" */;

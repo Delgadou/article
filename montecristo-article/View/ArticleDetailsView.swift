@@ -8,18 +8,21 @@
 import SwiftUI
 
 struct ArticleDetailsView: View {
-    @State var articleDetailsModel = ArticleDetailsModel()
-    @Binding var articleDetails: Article
+    @Binding var model: ArticleDetailsModel
 
     private var editButton: some View {
         Group {
-            if articleDetailsModel.editingMode == .inactive {
-                Button(action: articleDetailsModel.editButtonPressed) {
-                    Text("Edit")
-                }
+            if (model.isArticleCreationMode) {
+                EmptyView()
             } else {
-                Button(action: articleDetailsModel.doneButtonPressed) {
-                    Text("Done")
+                if model.editingMode == .inactive {
+                    Button(action: model.editButtonPressed) {
+                        Text("Edit")
+                    }
+                } else {
+                    Button(action: model.doneButtonPressed) {
+                        Text("Done")
+                    }
                 }
             }
         }
@@ -27,38 +30,44 @@ struct ArticleDetailsView: View {
 
     var body: some View {
         VStack {
-            if articleDetailsModel.editingMode == .active {
-                TextField("Title", text: $articleDetails.title, axis: .vertical)
+            if model.editingMode == .active {
+                TextField("Title", text: $model.article.title, axis: .vertical)
                     .lineLimit(1...5)
                     .textCustomStyle()
             } else {
-                Text(articleDetails.title)
+                Text(model.article.title)
                     .textCustomStyle()
             }
 
-            if articleDetailsModel.editingMode == .active {
-                TextField("Subtitle", text: $articleDetails.subtitle, axis: .vertical)
+            if model.editingMode == .active {
+                TextField("Subtitle", text: $model.article.subtitle, axis: .vertical)
                     .lineLimit(1...3)
                     .foregroundStyle(.secondary)
                     .font(.subheadline)
                     .hAlign(.leading)
-
             } else {
-                Text(articleDetails.subtitle)
+                Text(model.article.subtitle)
                     .foregroundStyle(.secondary)
                     .font(.subheadline)
                     .hAlign(.leading)
             }
 
-            TextEditor(text: $articleDetails.content)
-                .padding(.all, 10)
-                .padding(.bottom, 10)
-                .lineLimit(5...10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth: 1)
-                )
-                .disabled(articleDetailsModel.editingMode == .active ? false : true)
+            if(model.editingMode == .active) {
+                TextEditor(text: $model.article.content)
+                    .padding(.all, 10)
+                    .padding(.bottom, 10)
+                    .lineLimit(5...10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray, lineWidth: 1)
+                    )
+                    .disabled(model.editingMode == .active ? false: true)
+            } else {
+                Divider()
+                Text(model.article.content)
+                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading )
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

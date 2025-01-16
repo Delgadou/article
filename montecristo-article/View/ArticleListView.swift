@@ -9,16 +9,16 @@ import SwiftUI
 import SwiftUINavigation
 
 struct ArticleListView: View {
-    @State var articleListModel = ArticleListModel()
+    @State var model = ArticleListModel()
 
     private var editButton: some View {
         Group {
-            if articleListModel.editingMode == .inactive {
-                Button(action: articleListModel.editButtonPressed) {
+            if model.editingMode == .inactive {
+                Button(action: model.editButtonPressed) {
                     Text("Edit")
                 }
             } else {
-                Button(action: articleListModel.doneButtonPressed) {
+                Button(action: model.doneButtonPressed) {
                     Text("Done")
                 }
             }
@@ -27,10 +27,10 @@ struct ArticleListView: View {
 
     private var deleteButton: some View {
         Group {
-            if articleListModel.editingMode == .inactive {
+            if model.editingMode == .inactive {
                 EmptyView()
             } else {
-                Button(action: articleListModel.deleteButtonPressed) {
+                Button(action: model.deleteButtonPressed) {
                     Image(systemName: "trash")
                 }
             }
@@ -39,10 +39,10 @@ struct ArticleListView: View {
 
     private var createButton: some View {
         Group {
-            if articleListModel.editingMode == .active {
+            if model.editingMode == .active {
                 EmptyView()
             } else {
-                Button(action: articleListModel.createButtonPressed) {
+                Button(action: model.createButtonPressed) {
                     Image(systemName: "plus")
                 }
             }
@@ -50,30 +50,19 @@ struct ArticleListView: View {
     }
 
     var body: some View {
-        VStack {
-            Text("Monte Cristo Articles")
-                .font(.title)
-                .bold()
-                .hAlign(.leading)
-            List($articleListModel.articles, selection: $articleListModel.selectedItems) { articles in
-                NavigationLink {
-                    ArticleDetailsView(articleDetails: articles)
-                } label: {
-                    Text(articles.title.wrappedValue)
+        List(model.articles, selection: $model.selectedItems) { articles in
+            Button() {
+                model.destination = .edit(articles)
+            } label: {
+                HStack {
+                    Text(articles.article.title)
+                    Spacer()
+                    Image(systemName: "chevron.right")
                 }
             }
-            .environment(\.editMode, $articleListModel.editingMode)
-            .listStyle(.inset)
-            .scrollContentBackground(.hidden)
-            .sheet(isPresented: $articleListModel.shouldPresentCreateSheet,
-                   content: {
-                CreateArticleSheetView(shouldPresentCreateSheet: $articleListModel.shouldPresentCreateSheet,
-                                       articles: $articleListModel.articles
-                )
-            })
+            .frame(maxWidth: .infinity)
         }
-        .padding()
-        .vAlign(.top)
+        .padding(.trailing)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 deleteButton
@@ -83,6 +72,31 @@ struct ArticleListView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 editButton
+            }
+        }
+        .environment(\.editMode, $model.editingMode)
+        .listStyle(.inset)
+        .scrollContentBackground(.hidden)
+        .navigationTitle("Monte Cristo Articles")
+        .navigationDestination(item: $model.destination.edit) { item in
+            ArticleDetailsView(model: item)
+        }
+        .vAlign(.top)
+        .sheet(item: $model.destination.add) { $itemToAdd in
+            NavigationStack {
+                ArticleDetailsView(model: $itemToAdd)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button("Cancel") {
+                                model.closeArticleCreator()
+                            }
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Create") {
+                                model.saveCreatedArticle(article: $itemToAdd.article)
+                            }
+                        }
+                    }
             }
         }
     }
