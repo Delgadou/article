@@ -16,11 +16,11 @@ struct montecristo_articleApp: App {
             isArticleCreationMode: false
         ),
         ArticleDetailsModel(
-            article: Article(title: "How to create App Intents", subtitle: "Discover more about app intents in this article", content: "Lorem ipsum"),
+            article: Article(title: "How to create add Controls", subtitle: "Discover more about add Controlsin this article", content: "Lorem ipsum"),
             isArticleCreationMode: false
         ),
         ArticleDetailsModel(
-            article: Article(title: "How to create App Intents", subtitle: "Discover more about app intents in this article", content: "Lorem ipsum"),
+            article: Article(title: "How to create Login App", subtitle: "Discover more about Login App in this article", content: "Lorem ipsum"),
             isArticleCreationMode: false
         ),
         ArticleDetailsModel(

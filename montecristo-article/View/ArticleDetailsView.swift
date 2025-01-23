@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ArticleDetailsView: View {
-    @Binding var model: ArticleDetailsModel
+    @State var model: ArticleDetailsModel
 
     private var editButton: some View {
         Group {
@@ -16,12 +16,18 @@ struct ArticleDetailsView: View {
                 EmptyView()
             } else {
                 if model.editingMode == .inactive {
-                    Button(action: model.editButtonPressed) {
+                    Button(action: model.editArticle) {
                         Text("Edit")
                     }
                 } else {
-                    Button(action: model.doneButtonPressed) {
-                        Text("Done")
+                    HStack {
+                        Button(action: model.cancelEditing) {
+                            Text("Cancel")
+                        }
+                        
+                        Button(action: model.onSave) {
+                            Text("Save")
+                        }
                     }
                 }
             }
@@ -31,7 +37,7 @@ struct ArticleDetailsView: View {
     var body: some View {
         VStack {
             if model.editingMode == .active {
-                TextField("Title", text: $model.article.title, axis: .vertical)
+                TextField("Title", text: $model.editableArticle.title, axis: .vertical)
                     .lineLimit(1...5)
                     .textCustomStyle()
             } else {
@@ -40,7 +46,7 @@ struct ArticleDetailsView: View {
             }
 
             if model.editingMode == .active {
-                TextField("Subtitle", text: $model.article.subtitle, axis: .vertical)
+                TextField("Subtitle", text: $model.editableArticle.subtitle, axis: .vertical)
                     .lineLimit(1...3)
                     .foregroundStyle(.secondary)
                     .font(.subheadline)
@@ -53,7 +59,7 @@ struct ArticleDetailsView: View {
             }
 
             if(model.editingMode == .active) {
-                TextEditor(text: $model.article.content)
+                TextEditor(text: $model.editableArticle.content)
                     .padding(.all, 10)
                     .padding(.bottom, 10)
                     .lineLimit(5...10)

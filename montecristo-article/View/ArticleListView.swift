@@ -50,12 +50,12 @@ struct ArticleListView: View {
     }
 
     var body: some View {
-        List(model.articles, selection: $model.selectedItems) { articles in
+        List(model.articles, selection: $model.selectedItems) { article in
             Button() {
-                model.destination = .edit(articles)
+                model.articleDetailsPressed(article: article)
             } label: {
                 HStack {
-                    Text(articles.article.title)
+                    Text(article.article.title)
                     Spacer()
                     Image(systemName: "chevron.right")
                 }
@@ -82,9 +82,9 @@ struct ArticleListView: View {
             ArticleDetailsView(model: item)
         }
         .vAlign(.top)
-        .sheet(item: $model.destination.add) { $itemToAdd in
+        .sheet(item: $model.destination.add) { itemToAdd in
             NavigationStack {
-                ArticleDetailsView(model: $itemToAdd)
+                ArticleDetailsView(model: itemToAdd)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
                             Button("Cancel") {
@@ -93,7 +93,7 @@ struct ArticleListView: View {
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button("Create") {
-                                model.saveCreatedArticle(article: $itemToAdd.article)
+                                model.saveCreatedArticle(article: itemToAdd.editableArticle)
                             }
                         }
                     }

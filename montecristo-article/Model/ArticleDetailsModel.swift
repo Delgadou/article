@@ -10,24 +10,26 @@ import SwiftUI
 import SwiftUINavigation
 import XCTestDynamicOverlay
 
+@MainActor
 @Observable
 class ArticleDetailsModel: Identifiable {
     var editingMode = EditMode.inactive
     var article: Article
+    var editableArticle: Article = Article(title: "", subtitle: "", content: "")
     var isArticleCreationMode: Bool = false
+    var onSave: () -> Void = unimplemented("ItemRowModel.onSave")
 
-    var onTap: () -> Void = unimplemented("ItemRowModel.onTap")
-
-    func editButtonPressed() {
+    func editArticle() {
+        editableArticle = article
         editingMode = .active
     }
 
-    func doneButtonPressed() {
+    func saveEditedArticle() {
         editingMode = .inactive
     }
 
-    func articleButtonPressed() {
-
+    func cancelEditing() {
+        editingMode = .inactive
     }
 
     init(article: Article, isArticleCreationMode: Bool) {
