@@ -14,16 +14,16 @@ import IdentifiedCollections
 @MainActor
 @Observable
 class ArticleListModel {
-    var articles: IdentifiedArrayOf<ArticleDetailsModel> {
-        didSet {
-            bind()
-        }
-    }
+    var articles: IdentifiedArrayOf<ArticleDetailsModel>
     var selectedItems: Set<ArticleDetailsModel.ID> = []
     var editingMode = EditMode.inactive
     var shouldPresentCreateSheet = false
 
-    var destination: Destination?
+    var destination: Destination? {
+        didSet {
+            bind()
+        }
+    }
 
     @CasePathable
     enum Destination {
@@ -35,18 +35,20 @@ class ArticleListModel {
         articles: IdentifiedArrayOf<ArticleDetailsModel> = []
     ) {
         self.articles = articles
-        bind()
     }
 
     private func bind() {
-        for articleDetailsModel in articles {
-            articleDetailsModel.onSave = { [weak self, weak articleDetailsModel] in
-                guard let self, let articleDetailsModel else { return }
-                if let index = articles.firstIndex(where: { $0.id == articleDetailsModel.id }) {
-                    articles[index].article = articleDetailsModel.editableArticle
-                }
-                    articleDetailsModel.editingMode = .inactive
+        switch destination {
+        case .add(_):
+            print("Tame impala meooooooooo")
+        case .edit(let model):
+            model.onSave = { [weak self] article in
+                guard self != nil else { return }
+                model.article = article
+                model.editingMode = .inactive
             }
+        case .none:
+            break
         }
     }
 
