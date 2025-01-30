@@ -20,7 +20,6 @@ class ArticleDetailsModel: Identifiable {
     var onSave: (Article) -> Void = unimplemented("ItemRowModel.onSave")
 
     func buttonSavedPressed() {
-        //onSave(editableArticle)
         onSave(editableArticle)
     }
 
