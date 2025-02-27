@@ -17,7 +17,11 @@ class ArticleDetailsModel: Identifiable {
     var article: Article
     var editableArticle: Article = Article(title: "", subtitle: "", content: "")
     var isArticleCreationMode: Bool = false
-    var onSave: () -> Void = unimplemented("ItemRowModel.onSave")
+    var onSave: (Article) -> Void = unimplemented("ItemRowModel.onSave")
+
+    func buttonSavedPressed() {
+        onSave(editableArticle)
+    }
 
     func editArticle() {
         editableArticle = article

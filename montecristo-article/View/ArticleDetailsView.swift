@@ -25,7 +25,7 @@ struct ArticleDetailsView: View {
                             Text("Cancel")
                         }
                         
-                        Button(action: model.onSave) {
+                        Button(action: model.buttonSavedPressed) {
                             Text("Save")
                         }
                     }
